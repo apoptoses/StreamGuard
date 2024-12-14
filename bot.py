@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from app import send_discord_message, get_current_streamer
+import app
 from commands import BotCommands
 from storage import init_db, get_all_guild_ids
 
@@ -65,3 +66,4 @@ if __name__ == "__main__":
         bot.run(DISCORD_BOT_TOKEN)
     else:
         print("[ ERROR ] DISCORD_BOT_TOKEN not found. Make sure to set it in the .env file.")
+    app.run(host="0.0.0.0", port=FLASK_PORT)
