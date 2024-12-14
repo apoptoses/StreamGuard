@@ -2,7 +2,6 @@ import os
 import time
 import threading
 import requests
-from flask import Flask, send_from_directory
 from dotenv import load_dotenv
 from storage import get_streamers, init_db, get_all_guild_ids
 
@@ -18,20 +17,7 @@ CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 CHECK_INTERVAL = 60
 TWITCH_API_URL = "https://api.twitch.tv/helix/streams"
 
-# flask app setup
-app = Flask(__name__, static_folder='.')
-
 notified_streams = {}
-
-@app.route("/")
-def home():
-    """Basic route to confirm service is running."""
-    return "Twitch Monitor Service is Running!"
-
-@app.route("/discord")
-def discord_home():
-    """Serve the index.html for Discord bot."""
-    return send_from_directory('.', 'index.html')
 
 def get_oauth_token():
     """Fetch OAuth token from Twitch."""
@@ -121,5 +107,3 @@ if __name__ == "__main__":
     monitor_thread = threading.Thread(target=monitor_streams)
     monitor_thread.daemon = True
     monitor_thread.start()
-
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

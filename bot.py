@@ -2,15 +2,14 @@ import os
 import discord
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
+from flask import Flask
+import threading
 from app import send_discord_message, get_current_streamer
-import app
 from commands import BotCommands
 from storage import init_db, get_all_guild_ids
 
 # load environment variables
 load_dotenv()
-
-FLASK_PORT = int(os.getenv('FLASK_PORT', 5000))
 
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
@@ -24,6 +23,16 @@ intents.messages = True
 intents.message_content = True  # enable message content intent
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
+# flask app setup
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Discord Bot is Running!"
+
+def run_flask_app():
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 @bot.event
 async def on_ready():
     await bot.add_cog(BotCommands(bot))
@@ -61,9 +70,12 @@ if __name__ == "__main__":
         # ensure each guild has its own set of notified streams
         from app import notified_streams
         notified_streams[guild_id] = set()
-    
+
+    # Start the Flask app in a separate thread
+    flask_thread = threading.Thread(target=run_flask_app)
+    flask_thread.daemon = True
+    flask_thread.start()
     if DISCORD_BOT_TOKEN:
         bot.run(DISCORD_BOT_TOKEN)
     else:
         print("[ ERROR ] DISCORD_BOT_TOKEN not found. Make sure to set it in the .env file.")
-    app.run(host="0.0.0.0", port=FLASK_PORT)
