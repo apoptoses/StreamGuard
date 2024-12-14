@@ -4,7 +4,7 @@ from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from flask import Flask
 import threading
-from app import send_discord_message, get_current_streamer
+from app import get_current_streamer
 from commands import BotCommands
 from storage import init_db, get_all_guild_ids
 
@@ -79,3 +79,4 @@ if __name__ == "__main__":
         bot.run(DISCORD_BOT_TOKEN)
     else:
         print("[ ERROR ] DISCORD_BOT_TOKEN not found. Make sure to set it in the .env file.")
+
