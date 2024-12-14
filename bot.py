@@ -9,6 +9,8 @@ from storage import init_db, get_all_guild_ids
 # load environment variables
 load_dotenv()
 
+FLASK_PORT = int(os.getenv('FLASK_PORT', 5000))
+
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
 role_id = int(os.getenv('DISCORD_ROLE_ID', 0))
