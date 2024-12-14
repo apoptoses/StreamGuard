@@ -41,12 +41,33 @@ intents = discord.Intents.default()
 intents.guilds = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+notified_streams = set()
+current_streamer = None
+
+def get_current_streamer():
+    """Fetch the name of the currently streaming Twitch streamer."""
+    global notified_streams
+    if notified_streams:
+        return list(notified_streams)[0]  # Return the first live streamer
+    return None
+
 # Status and heartbeat
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=300)
 async def update_status():
-    activity = discord.Activity(name="Twitch 🎥", type=discord.ActivityType.listening)
+    global current_streamer
+
+    # Fetch the current live streamer
+    streamer = get_current_streamer()
+
+    if streamer:
+        activity = discord.Activity(name=f"{streamer} on Twitch", type=discord.ActivityType.watching)
+        current_streamer = streamer
+    else:
+        activity = discord.Activity(name="you", type=discord.ActivityType.watching)
+        current_streamer = None
+
     await bot.change_presence(activity=activity, status=discord.Status.online)
-    print(f"[ STATUS ] Updated status to: Listening to Twitch")
+    print(f"[ STATUS ] Updated status to: Watching {current_streamer or 'Twitch Streams'}")
 
 @tasks.loop(seconds=30)
 async def heartbeat():
@@ -103,8 +124,9 @@ def send_discord_message(message):
 
 def monitor_streams():
     """Monitor Twitch streams and notify on Discord."""
+    global notified_streams
+
     access_token = get_oauth_token()
-    notified_streams = set()
 
     while True:
         for streamer in STREAMERS:
@@ -128,12 +150,11 @@ if __name__ == "__main__":
     monitor_thread.daemon = True
     monitor_thread.start()
 
-    # Start the Flask web server in a separate thread
-    from threading import Thread
+
     def run_flask():
         app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
-    flask_thread = Thread(target=run_flask)
+    flask_thread = threading.Thread(target=run_flask)
     flask_thread.daemon = True
     flask_thread.start()
 
