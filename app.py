@@ -18,8 +18,7 @@ CLIENT_SECRET = os.getenv('TWITCH_CLIENT_SECRET')
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 DISCORD_CHANNEL_ID = os.getenv('DISCORD_CHANNEL_ID')
 
-# Twitch and Discord settings
-STREAMERS = ['kronk0133','p4nduhs1 ']
+STREAMERS = ['kronk0133', 'p4nduhs1']
 CHECK_INTERVAL = 60
 TWITCH_API_URL = "https://api.twitch.tv/helix/streams"
 DISCORD_API_URL = f"https://discord.com/api/channels/{DISCORD_CHANNEL_ID}/messages"
@@ -43,24 +42,11 @@ intents.guilds = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Status and heartbeat
-status_messages = ["🎧 Listening to Spotify", "🎮 Playing VALORANT"]
-status_types = [discord.Status.dnd, discord.Status.idle]
-current_status_index = 0
-current_type_index = 0
-
 @tasks.loop(seconds=10)
 async def update_status():
-    global current_status_index, current_type_index
-    current_status = status_messages[current_status_index]
-    current_type = status_types[current_type_index]
-    
-    # Use "Listening" activity instead of "Playing"
-    activity = discord.Activity(name=current_status, type=discord.ActivityType.listening)
-    await bot.change_presence(activity=activity, status=current_type)
-
-    print(f"[ STATUS ] Updated status to: {current_status} ({current_type})")
-    current_status_index = (current_status_index + 1) % len(status_messages)
-    current_type_index = (current_type_index + 1) % len(status_types)
+    activity = discord.Activity(name="Twitch 🎥", type=discord.ActivityType.listening)
+    await bot.change_presence(activity=activity, status=discord.Status.online)
+    print(f"[ STATUS ] Updated status to: Listening to Twitch")
 
 @tasks.loop(seconds=30)
 async def heartbeat():
