@@ -7,7 +7,7 @@ class BotCommands(commands.Cog):
         self.bot = bot
         self.role_id = 0
         self.channel_id = 0
-
+        
     def load_guild_data(self, guild_id):
         guild_data = get_server_data(guild_id)
         self.role_id = guild_data.get('role_id', 0)
@@ -40,7 +40,6 @@ class BotCommands(commands.Cog):
                         "purge": "Use it like this: `!purge <amount>`. Replace `<amount>` with the number of messages you want to delete.",
                         "streamers": "Use it like this: `!streamers <add>, <remove>, or <list>`. Replace `<add>` with the Twitch streamer's name you want to add, `<remove>` with the Twitch streamer's name you want to remove, or `<list>` to see the current list of streamers."
                     }
-
                     description = descriptions.get(command_name, "No detailed description available.")
                     embed = discord.Embed(title=f"Help for `{command_name}`", description=description, color=0x738bd7)
                     await ctx.send(embed=embed)
@@ -57,6 +56,7 @@ class BotCommands(commands.Cog):
             await ctx.send(f"Pong! Latency: {latency}ms")
         except Exception as e:
             print(f"Error in ping command: {e}")
+            
             
     @commands.command(name="set_role", help="Updates the bot's role ID. Provide the role's ID.")
     async def set_role(self, ctx, new_role_id: int):

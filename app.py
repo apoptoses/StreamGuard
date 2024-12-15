@@ -69,9 +69,7 @@ def send_discord_message(channel_id, message):
 def monitor_streams():
     """Monitor Twitch streams and notify on Discord."""
     global notified_streams
-
     access_token = get_oauth_token()
-
     while True:
         # iterate over each guild and its streamers
         for guild_id in notified_streams.keys():
