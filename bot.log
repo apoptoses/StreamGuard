@@ -1,0 +1,15 @@
+2024-12-17 23:04:18,705 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2024-12-17 23:04:18,707 - discord.client - INFO - logging in using static token
+2024-12-17 23:04:18,713 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.0.0.75:5000
+2024-12-17 23:04:18,714 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-12-17 23:04:19,453 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 7e71227733b0c1cd12271a6f7ad862af).
+2024-12-17 23:04:21,478 - __main__ - INFO - Registered commands: ['purge', 'set_role', 'set_channel', 'help', 'list', 'ping', 'streamers']
+2024-12-17 23:04:21,495 - __main__ - INFO - Bot ID: 1317263281781473331
+2024-12-17 23:04:21,495 - __main__ - INFO - Connected to 3 server(s)
+2024-12-17 23:04:21,495 - __main__ - INFO - Ping: 68 ms
+2024-12-17 23:04:22,100 - app - ERROR - Channel with ID 1316964445431398411 not found. Bot channels: []
+2024-12-17 23:04:22,101 - __main__ - INFO - [ HEARTBEAT ] Bot is alive at 2024-12-18 06:04:22.101920+00:00
+2024-12-17 23:04:51,511 - __main__ - INFO - [ HEARTBEAT ] Bot is alive at 2024-12-18 06:04:51.511504+00:00
